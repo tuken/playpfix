@@ -1,4 +1,7 @@
 package models
 
-case class Employee(name: String, email: String, companyName: String,position:String, id: Option[Int]=None)
+import org.joda.time.DateTime
 
+case class Domain(id: Int, domain: String, description: String, created_at: DateTime, updated_at: DateTime, active: Boolean)
+
+case class Alias(id: Int, domain_id: Int, address: String, goto: String, created_at: DateTime, updated_at: DateTime, active: Boolean)

@@ -1,37 +1,33 @@
 package bootstrap
 
 import com.google.inject.Inject
-import javax.inject.Singleton
-import repo.EmployeeRepository
-import models.Employee
-import java.util.Date
+
+import repo.AliasRepository
+import models.Alias
+
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.Logger
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class InitialData @Inject() (employeeRepo: EmployeeRepository) {
+class InitialData @Inject() (aliasRepo: AliasRepository) {
 
   def insert = for {
-    emps <- employeeRepo.getAll() if (emps.length == 0)
-    _ <- employeeRepo.insertAll(Data.employees)
+    aliases <- aliasRepo.getAll() if (aliases.length == 0)
+    _ <- aliasRepo.insertAll(Data.aliases)
   } yield {}
 
   try {
     Logger.info("DB initialization.................")
     Await.result(insert, Duration.Inf)
-  } catch {
+  }
+  catch {
     case ex: Exception =>
       Logger.error("Error in database initialization ", ex)
   }
-
 }
 
 object Data {
-  val employees = List(
-    Employee("Satendra", "satendra@knoldus.com", "Knoldus","Senior Consultant"),
-    Employee("Mayank", "mayank@knoldus.com",  "knoldus","Senior Consultant"),
-    Employee("Sushil", "sushil@knoldus.com",  "knoldus","Consultant"),
-    Employee("Narayan", "narayan@knoldus.com",  "knoldus","Consultant"),
-    Employee("Himanshu", "himanshu@knoldus.com",  "knoldus","Senior Consultant"))
+  val aliases = List()
 }

@@ -6,5 +6,4 @@ object Constants {
 
   val ERROR = "error"
   val SUCCESS = "success"
-
 }

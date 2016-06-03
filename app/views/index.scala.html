@@ -1,4 +1,4 @@
-@main("Play Angular App") {
+@main("Play pfix!") {
 
 <div ng-controller="empCtrl">
 
@@ -6,7 +6,7 @@
         <div class="row emp-header">
             <!-- Employee search -->
         <div class="col-sm-4 col-md-4 col-lg-4">
-            <input class="form-control" style="width: 70%;" type="text" ng-model="searchEmp" placeholder="Search employee ..."/>
+            <input class="form-control" style="width: 70%;" type="text" ng-model="searchEmp" placeholder="search alias ..." />
         </div>
             <!-- Alert messages -->
             <div class="col-sm-4 col-md-4 col-lg-4">
@@ -16,7 +16,7 @@
             </div>
             <!-- Add new employee link -->
         <div class="col-sm-4 col-md-4 col-lg-4">
-          <botton class="btn btn-success btn-sm add-button" style="font-weight: 600;" data-toggle="modal" data-target="#newEmpModal">Add New Employee</botton>
+          <botton class="btn btn-success btn-sm add-button" style="font-weight: 600;" data-toggle="modal" data-target="#newEmpModal">add new alias</botton>
         </div>
         </div>
      </div>
@@ -24,7 +24,7 @@
 
     @views.html.employee.empList()
     @views.html.employee.newEmpForm()
-    @views.html.employee.editEmpForm()
+    @views.html.employee.editEmpForm((): Unit)
 
 </div>
 }
