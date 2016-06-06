@@ -7,13 +7,12 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.{JsError, JsValue, Json}
 import play.api.libs.json.Json._
 import play.api.mvc._
-import repo.AliasRepository
 import utils.Constants
 import utils.JsonFormat._
 
 import scala.concurrent.Future
 
-class EmployeeController @Inject()(aliasRepo: AliasRepository) extends Controller {
+class EmployeeController @Inject()(alias: Alias) extends Controller {
 
   import Constants._
 
@@ -24,7 +23,7 @@ class EmployeeController @Inject()(aliasRepo: AliasRepository) extends Controlle
   }
 
   def list() = Action.async {
-    aliasRepo.getAll().map { res =>
+    alias.getAll().map { res =>
       logger.info("Emp list: " + res)
       Ok(successResponse(Json.toJson(res), "Getting Employee list successfully"))
     }
@@ -33,20 +32,20 @@ class EmployeeController @Inject()(aliasRepo: AliasRepository) extends Controlle
   def create() = Action.async(parse.json) { request =>
     logger.info("Employee Json ===> " + request.body)
     request.body.validate[Alias].fold(error => Future.successful(BadRequest(JsError.toJson(error))), { emp =>
-      aliasRepo.insert(emp).map { createdEmpId =>
+      alias.insert(emp).map { createdEmpId =>
         Ok(successResponse(Json.toJson(Map("id" ->createdEmpId)), "Employee has been created successfully."))
       }
     })
   }
 
   def delete(empId: Int) = Action.async { request =>
-    aliasRepo.delete(empId).map { _ =>
+    alias.delete(empId).map { _ =>
       Ok(successResponse(Json.toJson("{}"), "Employee has been deleted successfully."))
     }
   }
 
   def edit(empId: Int): Action[AnyContent] = Action.async { request =>
-    aliasRepo.getById(empId).map { empOpt =>
+    alias.getById(empId).map { empOpt =>
       empOpt.fold(Ok(obj("status" -> ERROR, "data" -> "{}", "msg" -> "Employee does not exist.")))(emp => Ok(
         successResponse(Json.toJson(emp), "Getting Employee successfully")))
     }
@@ -55,7 +54,7 @@ class EmployeeController @Inject()(aliasRepo: AliasRepository) extends Controlle
   def update = Action.async(parse.json) { request =>
     logger.info("Employee Json ===> " + request.body)
     request.body.validate[Alias].fold(error => Future.successful(BadRequest(JsError.toJson(error))), { emp =>
-      aliasRepo.update(emp).map { res => Ok(successResponse(Json.toJson("{}"), "Employee has been updated successfully.")) }
+      alias.update(emp).map { res => Ok(successResponse(Json.toJson("{}"), "Employee has been updated successfully.")) }
     })
   }
 }
