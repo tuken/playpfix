@@ -14,7 +14,7 @@ import scala.concurrent.Future
 class EmployeeControllerSpec  extends PlaySpecification with Mockito with Results {
 
   val mockedRepo = mock[EmployeeRepository]
-  val employeeController= new EmployeeController(mockedRepo)
+  val employeeController= new AliasController(mockedRepo)
 
   "EmployeeController " should {
 
